@@ -43,7 +43,7 @@ pipeline {
                 '''
             }
         }
-       stage('Deploy') {
+    stage('Deploy') {
     agent {
         docker {
             image 'my-docker-image'
@@ -55,7 +55,8 @@ pipeline {
             netlify --version
             echo "Site ID: $NETLIFY_SITE_ID"
             netlify status
-            netlify deploy --prod --dir=dist --build-command="npm run build"
+            # Build is already done in the Build stage, so just deploy
+            netlify deploy --prod --dir=build --site=$NETLIFY_SITE_ID
         '''
     }
 }
