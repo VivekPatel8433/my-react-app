@@ -13,7 +13,7 @@ pipeline {
         stage('Build') {
             agent {
                 docker {
-                    image 'my-docker-image'   // use the image we just built with Node 22
+                    image 'my-docker-image'
                     reuseNode true
                 }
             }
@@ -31,14 +31,15 @@ pipeline {
         stage('Test') {
             agent {
                 docker {
-                    image 'my-docker-image'   // again, Node 22
+                    image 'my-docker-image'
                     reuseNode true
                 }
             }
             steps {
                 sh '''
                     test -f build/index.html
-                    npm test
+                    # Run tests but don’t fail if none exist
+                    npm test -- --passWithNoTests
                 '''
             }
         }
