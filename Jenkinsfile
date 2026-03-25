@@ -43,21 +43,21 @@ pipeline {
                 '''
             }
         }
-        stage('Deploy') {
-            agent {
-                docker {
-                    image 'my-docker-image'
-                    reuseNode true
-                }
-            }
-            steps {
-                sh '''
-                    netlify --version
-                    echo "Site ID: $NETLIFY_SITE_ID"
-                    netlify status
-                    netlify deploy --prod --dir=build
-                '''
-            }
+       stage('Deploy') {
+    agent {
+        docker {
+            image 'my-docker-image'
+            reuseNode true
         }
+    }
+    steps {
+        sh '''
+            netlify --version
+            echo "Site ID: $NETLIFY_SITE_ID"
+            netlify status
+            netlify deploy --prod --dir=dist --build-command="npm run build"
+        '''
+    }
+}
     }
 }
