@@ -1,5 +1,5 @@
 # Use Node 24 to match your dependencies
-FROM node:24.14.0-alpine
+FROM node:22.17.1-alpine
 
 # Set working directory
 WORKDIR /app
