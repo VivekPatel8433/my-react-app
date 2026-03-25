@@ -51,6 +51,7 @@ pipeline {
                       --prod \
                       --dir=build \
                       --site=$NETLIFY_SITE_ID
+                      --no-build
                 '''
             }
         }
