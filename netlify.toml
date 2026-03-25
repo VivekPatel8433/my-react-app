@@ -1,3 +1,0 @@
-[build]
-  publish = "dist"
-  command = "echo 'skip build'"

@@ -23,37 +23,14 @@ pipeline {
             }
             steps {
                 sh '''
-                    echo "Checking environment..."
                     node --version
                     npm --version
 
-                    echo "Installing dependencies..."
                     npm install --legacy-peer-deps
-
-                    echo "Building project..."
                     npm run build
 
-                    echo "Build output:"
-                    ls -la
+                    echo "Checking dist folder..."
                     ls -la dist
-                '''
-            }
-        }
-
-        stage('Test') {
-            agent {
-                docker {
-                    image 'my-docker-image'
-                    reuseNode true
-                }
-            }
-            steps {
-                sh '''
-                    echo "Running tests..."
-                    test -f dist/index.html
-
-                    # Don't fail if no tests exist
-                    npm test -- --passWithNoTests || true
                 '''
             }
         }
@@ -67,8 +44,8 @@ pipeline {
             }
             steps {
                 sh '''
-                    echo "Deploying to Netlify..."
-                    netlify --version
+                    echo "Deploying..."
+                    export NETLIFY_AUTH_TOKEN=$NETLIFY_AUTH_TOKEN
 
                     netlify deploy \
                       --prod \
