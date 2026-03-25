@@ -53,9 +53,7 @@ pipeline {
     steps {
         sh '''
             netlify --version
-            echo "Site ID: $NETLIFY_SITE_ID"
-            netlify status
-            # Build is already done in the Build stage, so just deploy
+            echo "Deploying to Netlify site $NETLIFY_SITE_ID"
             netlify deploy --prod --dir=build --site=$NETLIFY_SITE_ID
         '''
     }
