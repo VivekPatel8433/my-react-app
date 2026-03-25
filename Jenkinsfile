@@ -9,7 +9,7 @@ pipeline{
         //     steps{
         //         sh 'docker build -t my-docker-image .'
         //     }
-        }
+        // }
         stage('Build'){
             agent{
                 docker{
