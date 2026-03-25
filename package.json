@@ -7,8 +7,8 @@
     "dev": "vite",
     "lint": "eslint .",
     "preview": "vite preview",
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "react-scripts start src/main.tsx",
+    "build": "react-scripts build src/main.tsx",
     "test": "react-scripts test"
   },
   "dependencies": {
