@@ -29,8 +29,8 @@ pipeline {
                     npm install --legacy-peer-deps
                     npm run build
 
-                    echo "Checking dist folder..."
-                    ls -la dist
+                    echo "Checking build folder..."
+                    ls -la build
                 '''
             }
         }
@@ -49,7 +49,7 @@ pipeline {
 
                     netlify deploy \
                       --prod \
-                      --dir=dist \
+                      --dir=build \
                       --site=$NETLIFY_SITE_ID
                 '''
             }
