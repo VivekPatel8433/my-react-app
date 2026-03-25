@@ -1,63 +1,56 @@
-pipeline{
+pipeline {
     agent any
-    environment{
+    environment {
         NETLIFY_SITE_ID = 'fec4d5ad-cc8e-4d5c-bb7a-9dbb6915ba04'
         NETLIFY_AUTH_TOKEN = credentials('my-react-app')
     }
-    stages{
-        stage('Docker'){
-            steps{
+    stages {
+        stage('Docker Build Image') {
+            steps {
                 sh 'docker build -t my-docker-image .'
             }
         }
-        stage('Build'){
-            agent{
-                docker{
-                    image 'node:24.14.0-alpine'
+        stage('Build') {
+            agent {
+                docker {
+                    image 'my-docker-image'   // use the image we just built with Node 22
                     reuseNode true
                 }
             }
-            steps{
-                sh'''
+            steps {
+                sh '''
                     ls -la
                     node --version
                     npm --version
-                    npm install
+                    npm install --legacy-peer-deps
                     npm run build
                     ls -la
                 '''
             }
         }
-        stage('Test'){
-            agent{
-                docker{
-                    image 'node:24.14.0-alpine'
+        stage('Test') {
+            agent {
+                docker {
+                    image 'my-docker-image'   // again, Node 22
                     reuseNode true
                 }
             }
-            steps{
-                sh'''
+            steps {
+                sh '''
                     test -f build/index.html
                     npm test
                 '''
             }
         }
-        stage('Deploy'){
-            agent{
-                docker{
-                    // image 'node:24.14.0-alpine'
+        stage('Deploy') {
+            agent {
+                docker {
                     image 'my-docker-image'
                     reuseNode true
                 }
             }
-            steps{
-                sh'''
-                    # npm install netlify-cli
-                    # node_modules/.bin/netlify --version
-                    # echo "Site ID: $NETLIFY_SITE_ID"
-                    # node_modules/.bin/netlify status
-                    # node_modules/.bin/netlify deploy --prod --dir=build
-
+            steps {
+                sh '''
                     netlify --version
                     echo "Site ID: $NETLIFY_SITE_ID"
                     netlify status
