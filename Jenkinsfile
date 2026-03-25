@@ -34,26 +34,25 @@ pipeline {
                 '''
             }
         }
-
         stage('Deploy') {
-            agent {
-                docker {
-                    image 'my-docker-image'
-                    reuseNode true
-                }
-            }
-            steps {
-                sh '''
-                    echo "Deploying..."
-                    export NETLIFY_AUTH_TOKEN=$NETLIFY_AUTH_TOKEN
-
-                    netlify deploy \
-                      --prod \
-                      --dir=build \
-                      --site=$NETLIFY_SITE_ID
-                      --no-build
-                '''
-            }
+    agent {
+        docker {
+            image 'my-docker-image'
+            reuseNode true
         }
+    }
+    steps {
+        sh '''
+            echo "Deploying..."
+            export NETLIFY_AUTH_TOKEN=$NETLIFY_AUTH_TOKEN
+
+            netlify deploy \
+              --prod \
+              --dir=build \
+              --site=$NETLIFY_SITE_ID \
+              --no-build
+        '''
+    }
+}
     }
 }
